@@ -1,39 +1,48 @@
+# -*- coding: utf-8 -*-
 class Cell:
     def __str__(self):
-        return "null_cell"
+        return "null_cell "
 
 class Ground(Cell):
     def __str__(self):
-        return "."
+        return " "
 
-class Grid:
-    def display(self, x, y):
-        return str(self.cells[y][x])
+class Wall(Cell):
+    def __str__(self):
+        return "▒"
 
+def arr2d(width, height):
+    cells = []
+    for y in range(height):
+        cells.append([])
+        for x in range(width):
+            cells[y].append(None)
+    return cells
+
+class Dungeon:
     def __str__(self):
         output = ""
-        for y in range(self.height):
-            for x in range(self.width):
-                output += self.display(x, y)
+        for row in self.cells:
+            for cell in row:
+                output += str(cell)
             output += "\n"
         return output
     
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.generate_ground()
+        self.cells = arr2d(width, height)
+        self.gen_rock()
 
-    def generate_ground(self):
-        self.cells = []
-        for y in range(self.height):
-            self.cells.append([])
-            for x in range(self.width):
-                self.cells[y].append(Ground())
+    def gen_rock(self):
+        for y in range(len(self.cells)):
+            for x in range(len(self.cells[y])):
+                self.cells[y][x] = Wall()
 
-def print_grid():
+def print_dungeon():
     height = 25
     width = 50
-    print(Grid(width, height))
+    print(Dungeon(width, height))
 
-print_grid()
+print_dungeon()
 
