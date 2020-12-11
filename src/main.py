@@ -20,6 +20,11 @@ def arr2d(width, height):
     return cells
 
 class Dungeon:
+    """ todo: extract world shard base class
+        create method to stamp on on top of other
+        params x and y starting point
+        dont go over edge of bottom shard """
+
     def __str__(self):
         output = ""
         for row in self.cells:
