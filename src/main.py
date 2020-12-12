@@ -34,15 +34,23 @@ class Dungeon:
         return output
     
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.cells = arr2d(width, height)
-        self.gen_rock()
+        self.cells = self.gen_rock(width, height)
+        self.cells = self.gen_room(10, 5)
 
-    def gen_rock(self):
-        for y in range(len(self.cells)):
-            for x in range(len(self.cells[y])):
-                self.cells[y][x] = Wall()
+    def gen_rock(self, width, height):
+        cells = arr2d(width, height)
+        fill_rect(cells, lambda : Wall())
+        return cells
+
+    def gen_room(self, width, height):
+        cells = arr2d(width, height)
+        fill_rect(cells, lambda : Ground())
+        return cells
+
+def fill_rect(cells, cell_lambda):
+    for y in range(len(cells)):
+        for x in range(len(cells[y])):
+            cells[y][x] = cell_lambda()
 
 def print_dungeon():
     height = 25
