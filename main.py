@@ -86,10 +86,8 @@ def clone(grid):
             copy[y][x] = grid[y][x]
     return copy
 
-def print_dungeon():
+if __name__ =="__main__":
     height = 25
     width = 50
     print(Dungeon(width, height))
-
-print_dungeon()
 
