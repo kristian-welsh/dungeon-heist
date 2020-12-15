@@ -73,7 +73,7 @@ def add_grids(base_grid, detail_grid, detail_x, detail_y):
     # ends early if we reach edge of base
     addition_right = min(detail_right, base_right)
     addition_bottom = min(detail_bottom, base_bottom)
-    
+
     result = clone(base_grid)
     for y in range(detail_y, addition_bottom):
         for x in range(detail_x, addition_right):
