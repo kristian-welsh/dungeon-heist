@@ -67,18 +67,15 @@ class Utils(unittest.TestCase):
                 [0, 0, 1]]
         self.assert_grids_equal(result, expected)
 
-    # todo: this should work in future, bug. Can fix, just min top and left as well
-    # def test_add_grids_doesnt_crash_on_underhang(self):
-    #     base = main.arr2d(3, 3, lambda: 0)
-    #     detail = main.arr2d(2, 2, lambda: 1)
-    #     result = main.add_grids(base, detail, -1, -1)
-    #     expected = [
-    #             [1, 0, 0],
-    #             [0, 0, 0],
-    #             [0, 0, 0]]
-    #     print(result)
-    #     print(expected)
-    #     self.assert_grids_equal(result, expected)
+    def test_add_grids_doesnt_crash_on_underhang(self):
+        base = main.arr2d(3, 3, lambda: 0)
+        detail = main.arr2d(2, 2, lambda: 1)
+        result = main.add_grids(base, detail, -1, -1)
+        expected = [
+                [1, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]]
+        self.assert_grids_equal(result, expected)
 
 class Cells(unittest.TestCase):
     def test_wall(self):

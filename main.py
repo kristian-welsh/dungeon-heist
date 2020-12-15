@@ -62,23 +62,33 @@ def fill_rect(cells, cell_lambda):
             cells[y][x] = cell_lambda()
 
 def add_grids(base_grid, detail_grid, detail_x=0, detail_y=0):
-    base_right = len(base_grid[0])
-    base_bottom = len(base_grid)
-
+    base_rect = Rectangle(top=0, bottom=len(base_grid), left=0, right=len(base_grid[0]))
     detail_width = len(detail_grid[0])
     detail_height = len(detail_grid)
-    detail_right = detail_width + detail_x
-    detail_bottom = detail_height + detail_y
-
+    detail_rect = Rectangle(top=detail_y, bottom=detail_height+detail_y, left=detail_x, right=detail_width+detail_x)
     # ends early if we reach edge of base
-    addition_right = min(detail_right, base_right)
-    addition_bottom = min(detail_bottom, base_bottom)
+    addition = base_rect.union(detail_rect)
 
     result = clone(base_grid)
-    for y in range(detail_y, addition_bottom):
-        for x in range(detail_x, addition_right):
+    for y in range(addition.top, addition.bottom):
+        for x in range(addition.left, addition.right):
             result[y][x] = detail_grid[y - detail_y][x - detail_x]
     return result
+
+class Rectangle:
+    def __init__(self, top, bottom, left, right):
+        self.top = top
+        self.bottom = bottom
+        self.left = left
+        self.right = right
+
+    def union(self, other):
+        return Rectangle(
+            right = min(self.right, other.right),
+            bottom = min(self.bottom, other.bottom),
+            left = max(self.left, other.left),
+            top = max(self.top, other.top))
+
 
 # assumes grid has a height of at least one
 def clone(grid):
