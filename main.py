@@ -61,7 +61,7 @@ def fill_rect(cells, cell_lambda):
         for x in range(len(cells[y])):
             cells[y][x] = cell_lambda()
 
-def add_grids(base_grid, detail_grid, detail_x, detail_y):
+def add_grids(base_grid, detail_grid, detail_x=0, detail_y=0):
     base_right = len(base_grid[0])
     base_bottom = len(base_grid)
 
