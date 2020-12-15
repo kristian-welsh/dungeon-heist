@@ -13,14 +13,6 @@ class Wall(Cell):
     def __str__(self):
         return "▒"
 
-def arr2d(width, height):
-    cells = []
-    for y in range(height):
-        cells.append([])
-        for x in range(width):
-            cells[y].append(None)
-    return cells
-
 class Dungeon:
     """ todo: extract world shard base class
         create method to stamp on on top of other
@@ -53,6 +45,16 @@ class Dungeon:
         cells = arr2d(width, height)
         fill_rect(cells, lambda : Ground())
         return cells
+
+def arr2d(width, height, cell_lambda=None):
+    cells = []
+    for y in range(height):
+        cells.append([])
+        for x in range(width):
+            cells[y].append(None)
+    if cell_lambda:
+        fill_rect(cells, cell_lambda)
+    return cells
 
 def fill_rect(cells, cell_lambda):
     for y in range(len(cells)):
