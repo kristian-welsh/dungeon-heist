@@ -20,60 +20,68 @@ class Dungeon:
         dont go over edge of bottom shard """
 
     def __str__(self):
+        return str(self.grid)
+
+    def __init__(self, width, height):
+        self.grid = Grid(width, height, lambda:Wall())
+        room1 = Grid(10, 5, lambda:Ground())
+        room2 = Grid(6, 9, lambda:Ground())
+        room3 = Grid(11, 3, lambda:Ground())
+        self.grid = self.grid.add_grids(room1, 3, 6)
+        self.grid = self.grid.add_grids(room2, 27, 13)
+        self.grid = self.grid.add_grids(room3, 20, 5)
+
+class Grid:
+    """ todo: accept rectangle in constructor, save and drive behaviour with it """
+    def __init__(self, width, height, lamb=lambda:None):
+        self.cells = []
+        for y in range(height):
+            self.cells.append([])
+            for x in range(width):
+                self.cells[y].append(lamb())
+
+    @classmethod
+    def from_cells(cls, cells):
+        self = cls(len(cells[0]), len(cells))
+        self.cells = cells
+        return self
+
+    def __str__(self):
         output = ""
         for row in self.cells:
             for cell in row:
                 output += str(cell)
             output += "\n"
         return output
-    
-    def __init__(self, width, height):
-        rock = self.gen_rock(width, height)
-        room1 = self.gen_room(10, 5)
-        room2 = self.gen_room(6, 9)
-        room3 = self.gen_room(11, 3)
-        self.cells = add_grids(rock, room1, 3, 6)
-        self.cells = add_grids(self.cells, room2, 27, 13)
-        self.cells = add_grids(self.cells, room3, 20, 5)
 
-    def gen_rock(self, width, height):
-        cells = arr2d(width, height)
-        fill_rect(cells, lambda : Wall())
-        return cells
+    def clone(self):
+        """ assumes self.cells has a height of at least one """
+        copy = Grid(len(self.cells[0]), len(self.cells))
+        for y in range(len(self.cells)):
+            for x in range(len(self.cells[y])):
+                copy.cells[y][x] = self.cells[y][x]
+        return copy
 
-    def gen_room(self, width, height):
-        cells = arr2d(width, height)
-        fill_rect(cells, lambda : Ground())
-        return cells
+    def fill_rect(self, cell_lambda):
+        for y in range(len(self.cells)):
+            for x in range(len(self.cells[y])):
+                self.cells[y][x] = cell_lambda()
 
-def arr2d(width, height, cell_lambda=None):
-    cells = []
-    for y in range(height):
-        cells.append([])
-        for x in range(width):
-            cells[y].append(None)
-    if cell_lambda:
-        fill_rect(cells, cell_lambda)
-    return cells
-
-def fill_rect(cells, cell_lambda):
-    for y in range(len(cells)):
-        for x in range(len(cells[y])):
-            cells[y][x] = cell_lambda()
-
-def add_grids(base_grid, detail_grid, detail_x=0, detail_y=0):
-    base_rect = Rectangle(top=0, bottom=len(base_grid), left=0, right=len(base_grid[0]))
-    detail_width = len(detail_grid[0])
-    detail_height = len(detail_grid)
-    detail_rect = Rectangle(top=detail_y, bottom=detail_height+detail_y, left=detail_x, right=detail_width+detail_x)
-    # ends early if we reach edge of base
-    addition = base_rect.union(detail_rect)
-
-    result = clone(base_grid)
-    for y in range(addition.top, addition.bottom):
-        for x in range(addition.left, addition.right):
-            result[y][x] = detail_grid[y - detail_y][x - detail_x]
-    return result
+    def add_grids(self, detail_grid, detail_x=0, detail_y=0):
+        """
+        does not update in place, returns a brand new grid with result 
+        details over edge of base are ignored becuase of addition rect
+        """
+        my_rect = Rectangle(top=0, bottom=len(self.cells), left=0, right=len(self.cells[0]))
+        detail_width = len(detail_grid.cells[0])
+        detail_height = len(detail_grid.cells)
+        detail_rect = Rectangle(top=detail_y, bottom=detail_height+detail_y, left=detail_x, right=detail_width+detail_x)
+        addition = my_rect.union(detail_rect)
+        result = self.clone()
+        for y in range(addition.top, addition.bottom):
+            for x in range(addition.left, addition.right):
+                result.cells[y][x] = detail_grid.cells[y - detail_y][x - detail_x]
+        return Grid.from_cells(result.cells)
 
 class Rectangle:
     def __init__(self, top, bottom, left, right):
@@ -89,14 +97,6 @@ class Rectangle:
             left = max(self.left, other.left),
             top = max(self.top, other.top))
 
-
-# assumes grid has a height of at least one
-def clone(grid):
-    copy = arr2d(len(grid[0]), len(grid))
-    for y in range(len(grid)):
-        for x in range(len(grid[y])):
-            copy[y][x] = grid[y][x]
-    return copy
 
 if __name__ =="__main__":
     height = 25
