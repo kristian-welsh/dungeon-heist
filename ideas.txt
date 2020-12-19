@@ -1,0 +1,53 @@
+dungeon game ideas
+
+I want to create a roguelike that is *actually* very like rogue, and not at all
+rogue*lite*, while simultaneously doing something new and unique that will keep
+me interested in development. It must be novel in some way to retain my interest
+as a project. This will also help the game gain an audience if i ever want to
+achieve any capitalism with it.
+
+I'll call keeping the true spirit of roguelike as it being a rogue-clone.
+I'll call the novelty to retain my interest "game novelty"
+
+- ways to keep it a rogue-clone
+  - text based in console window?
+    - might limit marketability
+  - strict movement on a grid
+  - zero metagame progression or soft-reset mechanics
+    - no upgrading a base, keeping your stats, finding old gear, etc
+  - focus on aquisition of knowledge and player ability as means of progression
+  - strength of a playthrough is determined by successfully keeping powerful items
+
+- quirk for game novelty
+  - unusual theme
+    - non-violent
+      - heist
+      - flower gathering
+      - villager searching for adventurer that didnt return
+    - ultra hardcore violence
+      - the doom of rogue-clones
+    - dungeon ecology and politics
+    - create item shop inside dungeon society
+  - non-standard gameplay focus
+    - focuses on society simulation, eg: dwarf fortress 
+    - high-realism
+    - highly simplified inventory and controls
+      - becomes a focused tactical game
+    - time travel mechanics
+  - technology improvements
+    - semi-turn based
+      - turn based in combat, not otherwise
+        - why?
+    - networked multiplayer in a rogue-clone
+    - distorted game-space
+      - fluidity with grid structure
+      - bending flatlander reality
+
+example of mixing ideas together to create full game:
+You live in a dungeon society in old ruins, populated with monsters and wizards.
+You are a thief in posetion of a magic time travel amulet, working their way up to bigger
+and bigger jobs. There is an ancient relic - the amulet of yvendor - on display
+in two weeks time. prepare for the heist without gaining suspicion of the
+vanguard princes.
+
+
