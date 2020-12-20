@@ -1,5 +1,6 @@
 from .cells import Wall, Ground
 from .grid import Grid
+from .player import Player
 
 class Dungeon:
     """ todo: extract world shard base class
@@ -8,13 +9,22 @@ class Dungeon:
         dont go over edge of bottom shard """
 
     def __str__(self):
-        return str(self.grid)
+        grid = self.grid
+        for room, x, y in self.rooms:
+            grid = grid.add_grids(room, x, y)
+        grid = grid.add_grids(self.player.grid, self.player.x, self.player.y)
+        return str(grid)
 
     def __init__(self, width, height):
         self.grid = Grid(width, height, lambda:Wall())
-        room1 = Grid(10, 5, lambda:Ground())
-        room2 = Grid(6, 9, lambda:Ground())
-        room3 = Grid(11, 3, lambda:Ground())
-        self.grid = self.grid.add_grids(room1, 3, 6)
-        self.grid = self.grid.add_grids(room2, 27, 13)
-        self.grid = self.grid.add_grids(room3, 20, 5)
+        self.rooms = [
+            (Grid(10, 5, lambda:Ground()), 3, 6),
+            (Grid(6, 9, lambda:Ground()), 20, 5),
+            (Grid(11, 3, lambda:Ground()), 27, 13)
+        ]
+        self.player = Player(6, 7)
+
+    def update_player(self, addx, addy):
+        self.player.x = self.player.x + addx
+        self.player.y = self.player.y + addy
+
