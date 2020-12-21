@@ -25,6 +25,5 @@ class Dungeon:
         self.player = Player(6, 7)
 
     def update_player(self, addx, addy):
-        self.player.x = self.player.x + addx
-        self.player.y = self.player.y + addy
+        self.player.update(addx, addy)
 

@@ -8,7 +8,12 @@ class Player():
         self.y = self.y + addy
 
     def __init__(self, x, y):
-        """grid is really becoming something like Sprite"""
+        """
+        grid is really becoming something like Sprite
+        i guess grid is really sprite, and its current default constructor 
+        draws a rectangle in that sprite of width by height.
+        I guess that means Dungeon isuStage
+        """
         self.grid = Grid(1, 1, lambda: PlayerCell())
         self.x = x
         self.y = y
