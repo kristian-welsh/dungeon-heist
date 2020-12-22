@@ -1,13 +1,16 @@
-from main.dungeon import Dungeon
-import tty, sys, termios
+from .dungeon import Dungeon
+import src.main.inputs
 
 class Game:
+
+    def __init__(self, dungeon):
+        self.dungeon = dungeon
+
     def start(self):
         self.game_active = True
-        self.dungeon = Dungeon(width = 50, height = 25)
         self.render()
         while self.game_active:
-            key = self.getkey()
+            key = src.main.inputs.getkey()
             self.update(key)
             self.render()
 
@@ -28,15 +31,4 @@ class Game:
 
     def render(self):
         print(self.dungeon)
-
-    # todo: belongs in class per os
-    def getkey(self):
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
 
