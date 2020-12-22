@@ -4,3 +4,11 @@ test() {
   coverage report
   coverage html
 }
+testcover() {
+  test
+  coverage report
+}
+r() { run; }
+t() { test; }
+c() { testcover; }
+tc() { testcover; }
