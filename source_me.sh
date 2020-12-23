@@ -1,4 +1,4 @@
-run() { python3 ./src; }
+run() { python3 -m src; }
 test() {
   coverage run -m unittest discover ./src/test
 }
