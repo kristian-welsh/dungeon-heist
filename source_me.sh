@@ -9,11 +9,7 @@ testcover() {
   # brave is a function that opens a webpage
   brave htmlcov/index.html
 }
-tags() {
-  cd src
-  ctags -R .
-  cd ..
-}
+tags() { ctags -R .; }
 r() { run; }
 t() { test; }
 c() { testcover; }

@@ -25,7 +25,7 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(grid.cells[len(grid.cells)-1][len(grid.cells[0])-1], value)
 
     def test_arr2d_with_lambda(self):
-        foo = Grid(2, 4, lambda: 1)
+        foo = Grid(2, 4, lamb=lambda: 1)
         self.assert_all_cells_equal(foo, 1)
 
     def assert_grids_equal(self, grida, gridb):
@@ -36,7 +36,7 @@ class TestGrid(unittest.TestCase):
                 self.assertEqual(grida[y][x], gridb[y][x])
 
     def test_clone(self):
-        foo = Grid(1, 1, lambda: "spaget")
+        foo = Grid(1, 1, lamb=lambda: "spaget")
         bar = foo.clone()
         self.assertEqual(foo.cells, bar.cells)
 
@@ -47,8 +47,8 @@ class TestGrid(unittest.TestCase):
         self.assertNotEqual(foo, bar)
 
     def test_add_grids(self):
-        base = Grid(3, 3, lambda: 0)
-        detail = Grid(2, 2, lambda: 1)
+        base = Grid(3, 3, lamb=lambda: 0)
+        detail = Grid(2, 2, lamb=lambda: 1)
         result = base.add_grids(detail)
         expected = [
                 [1, 1, 0],
@@ -57,9 +57,9 @@ class TestGrid(unittest.TestCase):
         self.assert_grids_equal(result.cells, expected)
 
     def test_add_grids_doesnt_crash_on_overhang(self):
-        base = Grid(3, 3, lambda: 0)
-        detail = Grid(2, 2, lambda: 1)
-        result = base.add_grids(detail, 2, 2)
+        base = Grid(3, 3, lamb=lambda: 0)
+        detail = Grid(2, 2, 2, 2, lamb=lambda: 1)
+        result = base.add_grids(detail)
         expected = [
                 [0, 0, 0],
                 [0, 0, 0],
@@ -67,9 +67,9 @@ class TestGrid(unittest.TestCase):
         self.assert_grids_equal(result.cells, expected)
 
     def test_add_grids_doesnt_crash_on_underhang(self):
-        base = Grid(3, 3, lambda: 0)
-        detail = Grid(2, 2, lambda: 1)
-        result = base.add_grids(detail, -1, -1)
+        base = Grid(3, 3, lamb=lambda: 0)
+        detail = Grid(2, 2, -1, -1, lamb=lambda: 1)
+        result = base.add_grids(detail)
         expected = [
                 [1, 0, 0],
                 [0, 0, 0],

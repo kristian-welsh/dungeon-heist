@@ -16,23 +16,22 @@ class Dungeon:
         exists, inclusive of changes and current state. """
 
     def __str__(self):
-        grid, x, y = (self.player.grid, self.player.x, self.player.y)
-        display = self.grid.add_grids(grid, x, y)
+        display = self.grid.add_grids(self.player.grid)
         return str(display)
 
     def __init__(self, width, height):
         self.player = Player(6, 7)
         self.rooms = [
-            (Grid(10, 5, lambda:Ground()), 3, 6),
-            (Grid(6, 9, lambda:Ground()), 20, 5),
-            (Grid(11, 3, lambda:Ground()), 27, 13),
+            Grid(10, 5, 3, 6, lambda:Ground()),
+            Grid(6, 9, 20, 5, lambda:Ground()),
+            Grid(11, 3, 27, 13, lambda:Ground()),
         ]
         self.grid = self.make_grid(width, height)
 
     def make_grid(self, width, height):
-        grid = Grid(width, height, lambda:Wall())
-        for room, x, y in self.rooms:
-            grid = grid.add_grids(room, x, y)
+        grid = Grid(width, height, 0, 0, lambda:Wall())
+        for room in self.rooms:
+            grid = grid.add_grids(room, room.rect.left, room.rect.top)
         return grid
 
 
@@ -43,5 +42,8 @@ class Dungeon:
     def collide(self, addx, addy):
         new_x = self.player.x + addx
         new_y = self.player.y + addy
+        print("here")
+        print(self.grid.cells[new_y][new_x])
+        print("end here")
         return self.grid.cells[new_y][new_x].collides()
 

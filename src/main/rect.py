@@ -7,8 +7,8 @@ class Rectangle:
 
     def union(self, other):
         return Rectangle(
-            right = min(self.right, other.right),
+            top = max(self.top, other.top),
             bottom = min(self.bottom, other.bottom),
             left = max(self.left, other.left),
-            top = max(self.top, other.top))
+            right = min(self.right, other.right))
 
