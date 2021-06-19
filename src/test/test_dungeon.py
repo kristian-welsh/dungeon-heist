@@ -1,5 +1,6 @@
 import unittest
-from src.main.dungeon import Dungeon, RoomGenerator
+from src.main.dungeon import Dungeon
+from src.main.roomgen import RoomGenerator
 from src.main.grid import Grid
 from src.main.cells import Wall, Ground
 
