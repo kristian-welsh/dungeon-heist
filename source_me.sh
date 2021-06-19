@@ -12,5 +12,6 @@ testcover() {
 tags() { ctags -R .; }
 r() { run; }
 t() { test; }
+v() { vim src/main/*.py; }
 c() { testcover; }
 tc() { testcover; }
