@@ -8,13 +8,21 @@ class Game:
 
     def start(self):
         self.game_active = True
-        self.render()
         while self.game_active:
+            self.render()
             key = src.main.inputs.getkey()
             self.update(key)
-            self.render()
 
     def update(self, key):
+        (x, y) = self.direction(key)
+        self.quitcheck(key)
+        self.dungeon.update_player(x, y)
+
+    def quitcheck(self, key):
+        if key == 'q':
+            self.game_active = False
+
+    def direction(self, key):
         x = 0
         y = 0
         if key == 'w':
@@ -25,9 +33,7 @@ class Game:
             y = 1
         elif key == 'd':
             x = 1
-        elif key == 'z':
-            self.game_active = False
-        self.dungeon.update_player(x, y)
+        return (x, y)
 
     def render(self):
         print(self.dungeon)
