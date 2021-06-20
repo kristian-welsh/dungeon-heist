@@ -13,5 +13,6 @@ tags() { ctags -R .; }
 r() { run; }
 t() { test; }
 v() { vim src/main/*.py; }
+vt() { vim src/test/*.py; }
 c() { testcover; }
 tc() { testcover; }
