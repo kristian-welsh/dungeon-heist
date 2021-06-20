@@ -1,6 +1,6 @@
 import unittest
 from src.main.dungeon import Dungeon
-from src.main.roomgen import RoomGenerator
+from src.main.roomgen import RoomGenerator, RandomFacade
 from src.main.grid import Grid
 from src.main.cells import Wall, Ground
 
@@ -11,7 +11,7 @@ class TestDungeon(unittest.TestCase):
         self.assertTrue(True)
 
     def test_collision_doesnt_occur(self):
-        dungeon = Dungeon(50, 25, FakeRoomGenerator(50, 25))
+        dungeon = Dungeon(50, 25, FakeRoomGenerator(RandomFacade(), 50, 25))
         player = dungeon.player
         player.x = 6
         player.y = 7
@@ -25,7 +25,7 @@ class TestDungeon(unittest.TestCase):
 
     def test_collision_occurs(self):
         """test correctness assumes placement of player in room by dungeon"""
-        dungeon = Dungeon(50, 25, FakeRoomGenerator(50, 25))
+        dungeon = Dungeon(50, 25, FakeRoomGenerator(RandomFacade(), 50, 25))
         dungeon.grid.cells[7][7] = Wall()
         result = dungeon.collide(1, 0)
         self.assertTrue(result)
