@@ -35,3 +35,11 @@ class Rectangle:
 
     def height(self):
         return self.bottom - self.top
+
+    def __str__(self):
+        return 'Rectangle(' + \
+        ' top: ' + str(self.top) + \
+        ' bottom: ' + str(self.bottom) + \
+        ' left: ' + str(self.left) + \
+        ' right: ' + str(self.right) + \
+        ' )'
