@@ -38,7 +38,6 @@ class Dungeon:
     def collide(self, addx, addy):
         new_x = self.player.x + addx
         new_y = self.player.y + addy
-        print(self.grid.cells[new_y][new_x])
         return self.grid.cells[new_y][new_x].collides()
 
 
