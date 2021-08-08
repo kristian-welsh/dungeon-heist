@@ -22,7 +22,7 @@ class RoomGenerator:
             emptySectors.extend(validSectors)
             emptySectors.remove(currentSector)
 
-        return [self.toGrid(room[0], lambda:room[1]) for room in rooms]
+        return [self.to_grid(room[0], lambda:room[1]) for room in rooms]
 
     def changeGeography(self, currentSector):
         roomRect = self.placeRoom(currentSector)
@@ -85,7 +85,7 @@ class RoomGenerator:
     def maxHeight(self, sectorHeight):
         return max(self.minsize[1], int(self.sizefactor[1] * sectorHeight))
 
-    def toGrid(self, rect, lamb=lambda:None):
+    def to_grid(self, rect, lamb=lambda:None):
         width = rect.right - rect.left
         height = rect.bottom - rect.top
         return Grid(width, height, rect.left, rect.top, lamb)

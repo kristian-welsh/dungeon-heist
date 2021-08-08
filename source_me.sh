@@ -14,5 +14,6 @@ r() { run; }
 t() { test; }
 v() { vim src/main/*.py; }
 vt() { vim src/test/*.py; }
+va() { vim src/main/*.py src/test/*.py; }
 c() { testcover; }
 tc() { testcover; }
