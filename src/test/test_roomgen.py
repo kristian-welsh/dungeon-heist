@@ -41,9 +41,10 @@ class TestRoomGenerator(unittest.TestCase):
         roomgen = RoomGenerator(FakeRandomFacade([1000, 500]), 0, 0)
         room = Rectangle(0, 1, 0, 1)
 
-        result = roomgen.randomRoomSize
+        result = roomgen.randomRoomSize(Rectangle(0, 80, 0, 30))
 
-        self.assertEqual(5, result)
+        self.assertEqual(1000, result[0])
+        self.assertEqual(500, result[1])
 
     def assert_rect_equal(self, expected, actual):
         self.assertEqual(expected.top, actual.top)
