@@ -12,24 +12,6 @@ class Rectangle:
             left = max(self.left, other.left),
             right = min(self.right, other.right))
 
-    def cut(self, inner):
-        outer = self
-        TL = Rectangle(outer.top, inner.top,  outer.left, inner.left)
-        TM = Rectangle(outer.top, inner.top,  inner.left, inner.right)
-        TR = Rectangle(outer.top, inner.top,  inner.right, outer.right)
-
-        ML = Rectangle(inner.top, inner.bottom,  outer.left, inner.left)
-        MM = Rectangle(inner.top, inner.bottom,  inner.left, inner.right)
-        MR = Rectangle(inner.top, inner.bottom,  inner.right, outer.right)
-
-        BL = Rectangle(inner.bottom, outer.bottom,  outer.left, inner.left)
-        BM = Rectangle(inner.bottom, outer.bottom,  inner.left, inner.right)
-        BR = Rectangle(inner.bottom, outer.bottom,  inner.right, outer.right)
-
-        return ((TL, TM, TR),
-                (ML, MM, MR),
-                (BL, BM, BR))
-
     def width(self):
         return self.right - self.left
 

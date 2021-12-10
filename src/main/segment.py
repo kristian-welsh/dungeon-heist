@@ -4,10 +4,11 @@ def within(small, target, large):
     return small <= target and target <= large
 
 class Segment:
-    def __init__(self, rect, rightSegments, bottomSegments):
+    def __init__(self, rect, rightSegments = [], bottomSegments = []):
         self.rect = rect
         self.rightSegments = rightSegments
         self.bottomSegments = bottomSegments
+
     # passes through right facing connections that could connect to new rect
     def rights_for(self, new_rect):
         return [seg for seg in self.rightSegments if

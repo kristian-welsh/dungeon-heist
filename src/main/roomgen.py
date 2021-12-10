@@ -1,4 +1,5 @@
 from .rect import Rectangle
+from .segment import Segment
 from .grid import Grid
 from random import *
 
@@ -12,7 +13,7 @@ class RoomGenerator:
 
     def generate(self):
         (levelWidth, levelHeight) = self.levelsize
-        emptySectors = [Rectangle(0, levelHeight, 0, levelWidth)]
+        emptySectors = [Segment(Rectangle(0, levelHeight, 0, levelWidth))]
         rooms = []
 
         for i in range(self.roomnum):
@@ -22,33 +23,33 @@ class RoomGenerator:
             emptySectors.extend(validSectors)
             emptySectors.remove(currentSector)
 
-        return [self.to_grid(room[0], lambda:room[1]) for room in rooms]
+        return [self.to_grid(room[0].rect, lambda:room[1]) for room in rooms]
 
     def changeGeography(self, currentSector):
         roomRect = self.placeRoom(currentSector)
-        innerSectors = currentSector.cut(roomRect)
-        room = innerSectors[1][1]
-        
-        flatInnerSectors = [sector for subTuple in innerSectors for sector in subTuple]
-        validSectors = self.removeSmallSectors(flatInnerSectors)
-        validSectors.remove(room)
-        return (room, validSectors)
+        newSectors = currentSector.replacements(roomRect)
+        room = newSectors[2]
+        emptySectors = self.removeSmallSectors(newSectors)
+        emptySectors.remove(room)
+        return (room, emptySectors)
 
     def removeSmallSectors(self, sectorList):
-        tinySectors = [sector for sector in sectorList if self.isTiny(sector)]
+        tinySectors = [sector for sector in sectorList if self.isTiny(sector.rect)]
         return [sector for sector in sectorList if sector not in tinySectors]
 
-    def isTiny(self, sector):
+    def isTiny(self, rect):
         return \
-        sector.width() < self.minsize[0] or \
-        sector.height() < self.minsize[1]
+        rect.width() < self.minsize[0] or \
+        rect.height() < self.minsize[1]
 
     def selectSector(self, sectors):
         return self.rand.sample(sectors, 1)[0]
 
+########## could extract class
+
     def placeRoom(self, sector):
-        roomSize = self.randomRoomSize(sector)
-        startPosition = self.randomStartPosition(sector, roomSize)
+        roomSize = self.randomRoomSize(sector.rect)
+        startPosition = self.randomStartPosition(sector.rect, roomSize)
         endPosition = self.calculateEndPosition(startPosition, roomSize)
 
         (startX, startY) = startPosition
@@ -60,23 +61,23 @@ class RoomGenerator:
         (roomWidth, roomHeight) = roomSize
         return (startX + roomWidth, startY + roomHeight)
 
-    def randomStartPosition(self, sector, roomSize):
-        (minStart, maxStart) = self.startPosBounds(sector, roomSize)
+    def randomStartPosition(self, rect, roomSize):
+        (minStart, maxStart) = self.startPosBounds(rect, roomSize)
         (minX, maxX) = (minStart[0], maxStart[0])
         (minY, maxY) = (minStart[1], maxStart[1])
         return (self.rand.randint(minX, maxX), self.rand.randint(minY, maxY))
 
-    def startPosBounds(self, sector, roomSize):
+    def startPosBounds(self, rect, roomSize):
         (roomWidth, roomHeight) = roomSize
-        minStart = (sector.left, sector.top)
-        maxStart = (sector.right - roomWidth, sector.bottom - roomHeight)
+        minStart = (rect.left, rect.top)
+        maxStart = (rect.right - roomWidth, rect.bottom - roomHeight)
         return (minStart, maxStart)
 
-    def randomRoomSize(self, sector):
-        sectorSize = (sector.right - sector.left, sector.bottom - sector.top)
-        (sectorWidth, sectorHeight) = sectorSize
-        roomWidth = self.rand.randint(self.minsize[0], self.maxWidth(sectorWidth))
-        roomHeight = self.rand.randint(self.minsize[1], self.maxHeight(sectorHeight))
+    def randomRoomSize(self, rect):
+        rectSize = (rect.right - rect.left, rect.bottom - rect.top)
+        (rectWidth, rectHeight) = rectSize
+        roomWidth = self.rand.randint(self.minsize[0], self.maxWidth(rectWidth))
+        roomHeight = self.rand.randint(self.minsize[1], self.maxHeight(rectHeight))
         return (roomWidth, roomHeight)
 
     def maxWidth(self, sectorWidth):
@@ -84,6 +85,8 @@ class RoomGenerator:
 
     def maxHeight(self, sectorHeight):
         return max(self.minsize[1], int(self.sizefactor[1] * sectorHeight))
+
+########## class end
 
     def to_grid(self, rect, lamb=lambda:None):
         width = rect.right - rect.left
