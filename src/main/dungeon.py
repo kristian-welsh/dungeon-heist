@@ -3,11 +3,7 @@ from .grid import Grid
 from .player import Player
 
 class Dungeon:
-    """ todo: extract world shard base class
-        create method to stamp on on top of other
-        params x and y starting point
-        dont go over edge of bottom shard
-        
+    """
         this class will evolve to become the logic for actions
         to perform in the dungeon, manipulated by game.
         There will be a seperate object for generating cells, 
