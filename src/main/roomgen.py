@@ -5,15 +5,16 @@ from random import *
 
 class RoomGenerator:
     def __init__(self, rand, width, height):
-        self.rand = rand
-        self.levelsize = (width, height)
-        self.minsize = (int(width/20), int(height/10))
-        self.sizefactor = (1/2, 3/4)
         self.roomnum = 9
+        self.rand = rand
+        self.area_rect = Rectangle(0, height, 0, width)
+
+        self.minsize = (int(width/20), int(height/10))
+        sizefactor = (8/9, 5/7)
+        self.rectgen = RectangleGenerator(rand, (width, height), self.minsize, sizefactor)
 
     def generate(self):
-        (levelWidth, levelHeight) = self.levelsize
-        emptySectors = [Segment(Rectangle(0, levelHeight, 0, levelWidth))]
+        emptySectors = [Segment(self.area_rect)]
         rooms = []
 
         for i in range(self.roomnum):
@@ -26,7 +27,7 @@ class RoomGenerator:
         return [self.to_grid(room[0].rect, lambda:room[1]) for room in rooms]
 
     def changeGeography(self, currentSector):
-        roomRect = self.placeRoom(currentSector)
+        roomRect = self.rectgen.generateRectangle(currentSector.rect)
         newSectors = currentSector.replacements(roomRect)
         room = newSectors[2]
         emptySectors = self.removeSmallSectors(newSectors)
@@ -45,53 +46,47 @@ class RoomGenerator:
     def selectSector(self, sectors):
         return self.rand.sample(sectors, 1)[0]
 
-########## could extract class
-
-    def placeRoom(self, sector):
-        roomSize = self.randomRoomSize(sector.rect)
-        startPosition = self.randomStartPosition(sector.rect, roomSize)
-        endPosition = self.calculateEndPosition(startPosition, roomSize)
-
-        (startX, startY) = startPosition
-        (endX, endY) = endPosition
-        return Rectangle(startY, endY, startX, endX)
-
-    def calculateEndPosition(self, startPosition, roomSize):
-        (startX, startY) = startPosition
-        (roomWidth, roomHeight) = roomSize
-        return (startX + roomWidth, startY + roomHeight)
-
-    def randomStartPosition(self, rect, roomSize):
-        (minStart, maxStart) = self.startPosBounds(rect, roomSize)
-        (minX, maxX) = (minStart[0], maxStart[0])
-        (minY, maxY) = (minStart[1], maxStart[1])
-        return (self.rand.randint(minX, maxX), self.rand.randint(minY, maxY))
-
-    def startPosBounds(self, rect, roomSize):
-        (roomWidth, roomHeight) = roomSize
-        minStart = (rect.left, rect.top)
-        maxStart = (rect.right - roomWidth, rect.bottom - roomHeight)
-        return (minStart, maxStart)
-
-    def randomRoomSize(self, rect):
-        rectSize = (rect.right - rect.left, rect.bottom - rect.top)
-        (rectWidth, rectHeight) = rectSize
-        roomWidth = self.rand.randint(self.minsize[0], self.maxWidth(rectWidth))
-        roomHeight = self.rand.randint(self.minsize[1], self.maxHeight(rectHeight))
-        return (roomWidth, roomHeight)
-
-    def maxWidth(self, sectorWidth):
-        return max(self.minsize[0], int(self.sizefactor[0] * sectorWidth))
-
-    def maxHeight(self, sectorHeight):
-        return max(self.minsize[1], int(self.sizefactor[1] * sectorHeight))
-
-########## class end
-
     def to_grid(self, rect, lamb=lambda:None):
-        width = rect.right - rect.left
-        height = rect.bottom - rect.top
-        return Grid(width, height, rect.left, rect.top, lamb)
+        return Grid(rect.width(), rect.height(), rect.left, rect.top, lamb)
+
+class RectangleGenerator:
+    def __init__(self, rand, levelsize, minsize, sizefactor):
+        self.rand = rand
+        self.levelsize = levelsize
+        self.minsize = minsize
+        self.sizefactor = sizefactor
+
+    def generateRectangle(self, bounds):
+        size = self.randomSize(bounds)
+        (x, y) = self.randomStartPosition(bounds, size)
+        (width, height) = size
+        return Rectangle(y, y + height, x, x + width)
+
+    def randomSize(self, bounds):
+        (widthMin, heightMin) = self.minsize
+        (widthMax, heightMax) = self.maxSize((bounds.width(), bounds.height()))
+        width = self.rand.randint(widthMin, widthMax)
+        height = self.rand.randint(heightMin, heightMax)
+        return (width, height)
+
+    def maxSize(self, boundSize):
+        (widthMax, heightMax) = boundSize
+        (widthMin, heightMin) = self.minsize
+        (widthFactor, heightFactor) = self.sizefactor
+        width = max(widthMin, int(widthFactor * widthMax))
+        height = max(heightMin, int(heightFactor * heightMax))
+        return (width, height)
+
+    def randomStartPosition(self, bounds, size):
+        startBounds = self.startPosBounds(bounds, size)
+        x = self.rand.randint(startBounds.left, startBounds.right)
+        y = self.rand.randint(startBounds.top, startBounds.bottom)
+        return (x, y)
+
+    def startPosBounds(self, bounds, size):
+        (width, height) = size
+        (right, bottom) = (bounds.right - width, bounds.bottom - height)
+        return Rectangle(bounds.top, bottom, bounds.left, right)
 
 class RandomFacade:
     def randint(self, minimum, maximum):
