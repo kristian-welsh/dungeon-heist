@@ -1,14 +1,11 @@
 import unittest
-from src.main.roomgen import RoomGenerator, RandomFacade
+from src.main.roomgen import RoomGenerator, RectangleGenerator, RandomFacade
 from src.main.rect import Rectangle
 
 def roomSized(width, height):
     return Rectangle(0, height, 0, width)
 
 class TestRoomGenerator(unittest.TestCase):
-    def test_init(self):
-        self.assertTrue(True)
-
     def test_istiny_returns_true_for_rooms_below_minsize(self):
         roomgen = RoomGenerator(FakeRandomFacade([0]), 0, 0)
 
@@ -42,6 +39,37 @@ class TestRoomGenerator(unittest.TestCase):
         self.assertEqual(expected.bottom, actual.bottom)
         self.assertEqual(expected.left, actual.left)
         self.assertEqual(expected.right, actual.right)
+
+class TestRectangleGenerator(unittest.TestCase):
+    def test_maxSize_accounts_for_minsize(self):
+        levelsize = (100, 100)
+        minsize = (10, 10)
+        size_factor = (1, 1)
+        rect_gen = RectangleGenerator(FakeRandomFacade([]), levelsize, minsize, size_factor)
+
+        result = rect_gen.maxSize((5, 5))
+
+        self.assertEqual(minsize, result)
+
+    def test_maxSize_accounts_for_size_factor(self):
+        levelsize = (100, 100)
+        minsize = (10, 10)
+        size_factor = (2, 3)
+        rect_gen = RectangleGenerator(FakeRandomFacade([]), levelsize, minsize, size_factor)
+
+        result = rect_gen.maxSize((20, 20))
+
+        self.assertEqual((20*2, 20*3), result)
+
+    def test_maxSize_doesnt_cap_at_levelsize(self):
+        levelsize = (100, 100)
+        minsize = (10, 10)
+        size_factor = (1, 1)
+        rect_gen = RectangleGenerator(FakeRandomFacade([]), levelsize, minsize, size_factor)
+
+        result = rect_gen.maxSize((200, 200))
+
+        self.assertEqual((200, 200), result)
 
 class FakeRandomFacade(RandomFacade):
     def __init__(self, returnValues):
