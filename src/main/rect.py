@@ -7,8 +7,21 @@ class Rectangle:
 
     def union(self, other):
         return Rectangle(
-            right = min(self.right, other.right),
+            top = max(self.top, other.top),
             bottom = min(self.bottom, other.bottom),
             left = max(self.left, other.left),
-            top = max(self.top, other.top))
+            right = min(self.right, other.right))
 
+    def width(self):
+        return self.right - self.left
+
+    def height(self):
+        return self.bottom - self.top
+
+    def __str__(self):
+        return 'Rectangle(' + \
+        ' top: ' + str(self.top) + \
+        ' bottom: ' + str(self.bottom) + \
+        ' left: ' + str(self.left) + \
+        ' right: ' + str(self.right) + \
+        ' )'
