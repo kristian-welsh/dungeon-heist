@@ -3,9 +3,9 @@ import src.main.inputs as inputs
 
 class Game:
 
-    def __init__(self, dungeon):
+    def __init__(self, dungeon, keyboard):
         self.dungeon = dungeon
-        self.keyboard = inputs.build_keyboard()
+        self.keyboard = keyboard
 
     def start(self):
         self.game_active = True
