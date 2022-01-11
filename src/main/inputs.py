@@ -1,12 +1,13 @@
+from src.main.os import OS
 try:
     import tty, sys, termios
-    OS = "linux"
+    system = OS.LINUX
 except:
     import msvcrt
-    OS = "windows"
+    system = OS.WINDOWS
 
 def build_keyboard():
-    if OS == "linux":
+    if system is OS.LINUX:
         return LinuxKeyboard()
     else:
         return WindowsKeyboard()
