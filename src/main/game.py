@@ -1,17 +1,17 @@
 from .dungeon import Dungeon
-import src.main.inputs
+import src.main.inputs as inputs
 
 class Game:
 
     def __init__(self, dungeon):
         self.dungeon = dungeon
+        self.keyboard = inputs.build_keyboard()
 
     def start(self):
         self.game_active = True
         while self.game_active:
             self.render()
-            key = src.main.inputs.getkey()
-            self.update(key)
+            self.update(self.keyboard.getkey())
 
     def update(self, key):
         (x, y) = self.direction(key)
