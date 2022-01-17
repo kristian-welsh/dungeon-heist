@@ -2,6 +2,7 @@ import unittest
 from src.main.dungeon import Dungeon
 from src.main.roomgen import RoomGenerator, RandomFacade
 from src.main.grid import Grid
+from src.main.rect import Rectangle
 from src.main.cells import Wall, Ground
 
 class TestDungeon(unittest.TestCase):
@@ -33,7 +34,7 @@ class TestDungeon(unittest.TestCase):
 class FakeRoomGenerator(RoomGenerator):
     def generate(self):
         return [
-            Grid(10, 5, 3, 6, lambda:Ground()),
-            Grid(6, 9, 20, 5, lambda:Ground()),
-            Grid(11, 3, 27, 13, lambda:Ground()),
+            Grid(Rectangle(6, 11, 3, 13), lambda:Ground()),
+            Grid(Rectangle(5, 9, 20, 6), lambda:Ground()),
+            Grid(Rectangle(13, 16, 27, 38), lambda:Ground()),
         ]

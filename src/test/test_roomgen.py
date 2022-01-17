@@ -18,22 +18,6 @@ class TestRoomGenerator(unittest.TestCase):
         self.assertEqual(True, tinyWidth)
         self.assertEqual(True, tinyHeight)
 
-    def test_to_grid_makes_correctly_sized_grid(self):
-        roomgen = RoomGenerator(FakeRandomFacade([0]), 0, 0)
-        room = Rectangle(10, 3, 10, 5)
-
-        result = roomgen.to_grid(room)
-
-        self.assert_rect_equal(room, result.rect)
-
-    def test_to_grid_gives_correct_cell_contents(self):
-        roomgen = RoomGenerator(FakeRandomFacade([0]), 0, 0)
-        room = Rectangle(0, 1, 0, 1)
-
-        result = roomgen.to_grid(room, lambda:'#')
-
-        self.assertEqual('#', result.cells[0][0])
-
     def assert_rect_equal(self, expected, actual):
         self.assertEqual(expected.top, actual.top)
         self.assertEqual(expected.bottom, actual.bottom)
