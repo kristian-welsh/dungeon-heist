@@ -41,7 +41,7 @@ class Grid:
             for x in range(len(self.cells[y])):
                 self.cells[y][x] = cell_lambda()
 
-    def add_grids(self, detail, detail_x=0, detail_y=0):
+    def add_grids(self, detail):
         """
         does not update in place, returns a brand new grid with result 
         details over edge of base are ignored becuase of addition rect

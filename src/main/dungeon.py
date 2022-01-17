@@ -20,16 +20,19 @@ class Dungeon:
         return str(display)
 
     def __init__(self, width, height, room_generator):
+        # spawn player inside guarenteed room for testing
         self.player = Player(6, 7)
+        test_room = Grid(Rectangle(5, 10, 5, 10), lambda:Ground())
         self.enemy = Enemy(7, 9)
-        self.rooms = room_generator.generate()
-        self.grid = self.make_grid(width, height)
 
-    def make_grid(self, width, height):
-        grid_rect = Rectangle(0, height, 0, width)
-        grid = Grid(grid_rect, lambda:Wall())
-        for room in self.rooms:
-            grid = grid.add_grids(room, room.rect.left, room.rect.top)
+        rooms = room_generator.generate()
+        rooms.append(test_room)
+        self.grid = self.make_grid(width, height, rooms)
+
+    def make_grid(self, width, height, rooms):
+        grid = Grid(Rectangle(0, height, 0, width), lambda:Wall())
+        for room in rooms:
+            grid = grid.add_grids(room)
         return grid
 
     def update_player(self, addx, addy):
@@ -40,6 +43,7 @@ class Dungeon:
         pass
 
     def collide(self, addx, addy):
+        """remember, this only collides against self.grid, not all entities"""
         new_x = self.player.x + addx
         new_y = self.player.y + addy
         return self.grid.cells[new_y][new_x].collides()
