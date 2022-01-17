@@ -24,7 +24,7 @@ class RoomGenerator:
             emptySectors.extend(validSectors)
             emptySectors.remove(currentSector)
 
-        return [self.to_grid(room[0].rect, lambda:room[1]) for room in rooms]
+        return [Grid(room[0].rect, lambda:room[1]) for room in rooms]
 
     def changeGeography(self, currentSector):
         roomRect = self.rectgen.generateRectangle(currentSector.rect)
@@ -45,9 +45,6 @@ class RoomGenerator:
 
     def selectSector(self, sectors):
         return self.rand.sample(sectors, 1)[0]
-
-    def to_grid(self, rect, lamb=lambda:None):
-        return Grid(rect.width(), rect.height(), rect.left, rect.top, lamb)
 
 class RectangleGenerator:
     def __init__(self, rand, levelsize, minsize, sizefactor):

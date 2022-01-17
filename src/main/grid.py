@@ -2,13 +2,17 @@ from .rect import Rectangle
 
 class Grid:
     """ todo: accept rectangle in constructor, save and drive behaviour with it """
-    def __init__(self, width, height, x=0, y=0, lamb=lambda:None):
-        self.rect = Rectangle(y, y + height, x, x + width)
+    def __init__(self, rect, lamb=lambda:None):
+        self.rect = rect
+        # Rectangle(y, y + height, x, x + width)
         self.cells = []
-        for y in range(height):
+        
+        # todo: refactor (extract method?)
+        for y in range(rect.height()):
             self.cells.append([])
-            for x in range(width):
+            for x in range(rect.width()):
                 self.cells[y].append(lamb())
+
 
     # unused?
     @classmethod
@@ -26,10 +30,9 @@ class Grid:
         return output
 
     def clone(self):
-        """ assumes self.cells has a height of at least one """
-        copy = Grid(len(self.cells[0]), len(self.cells))
-        for y in range(len(self.cells)):
-            for x in range(len(self.cells[y])):
+        copy = Grid(self.rect)
+        for y in range(self.rect.height()):
+            for x in range(self.rect.width()):
                 copy.cells[y][x] = self.cells[y][x]
         return copy
 

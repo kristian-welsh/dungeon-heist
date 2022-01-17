@@ -1,6 +1,7 @@
 from .cells import Wall, Ground
 from .grid import Grid
 from .player import Player
+from .rect import Rectangle
 
 class Dungeon:
     """
@@ -21,7 +22,8 @@ class Dungeon:
         self.grid = self.make_grid(width, height)
 
     def make_grid(self, width, height):
-        grid = Grid(width, height, 0, 0, lambda:Wall())
+        grid_rect = Rectangle(0, height, 0, width)
+        grid = Grid(grid_rect, lambda:Wall())
         for room in self.rooms:
             grid = grid.add_grids(room, room.rect.left, room.rect.top)
         return grid

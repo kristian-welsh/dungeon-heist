@@ -26,4 +26,11 @@ class PlayerCell(Cell):
 
     def __str__(self):
         return "@"
-# is Player a cell? What is a cell?
+
+class EnemyCell(Cell):
+    def collides(self):
+        return True
+
+    def __str__(self):
+        return "e"
+
