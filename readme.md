@@ -13,6 +13,6 @@ currently working on dungeon generation and enemy AI
 
 # Scrum
 
-dungeon heist has a trello board to track work to be done
-https://trello.com/b/58a202L0
+dungeon heist has a (trello board)[https://trello.com/b/58a202L0] to track work to be done
+
 
