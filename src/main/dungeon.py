@@ -22,7 +22,7 @@ class Dungeon:
     def __init__(self, width, height, room_generator):
         # spawn player inside guarenteed room for testing
         self.player = Player(6, 7)
-        test_room = Grid(Rectangle(5, 10, 5, 10), lambda:Ground())
+        test_room = Grid(Rectangle(5, 15, 5, 15), lambda:Ground())
         self.enemy = Enemy(7, 9)
 
         rooms = room_generator.generate()
