@@ -11,7 +11,7 @@ Minimum viable product includes enemies, connected rooms, and theftable objects
 
 currently working on dungeon generation and enemy AI
 
-# Scrum
+### Scrum
 
 dungeon heist has a [trello board](https://trello.com/b/58a202L0) to track work to be done
 
