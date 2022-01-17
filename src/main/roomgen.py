@@ -1,6 +1,7 @@
 from .rect import Rectangle
 from .segment import Segment
 from .grid import Grid
+from .cells import Ground
 from random import *
 
 class RoomGenerator:
@@ -20,11 +21,11 @@ class RoomGenerator:
         for i in range(self.roomnum):
             currentSector = self.selectSector(emptySectors)
             (room, validSectors) = self.changeGeography(currentSector)
-            rooms.append((room, i))
+            rooms.append(room)
             emptySectors.extend(validSectors)
             emptySectors.remove(currentSector)
 
-        return [Grid(room[0].rect, lambda:room[1]) for room in rooms]
+        return [Grid(room.rect, lambda:Ground()) for room in rooms]
 
     def changeGeography(self, currentSector):
         roomRect = self.rectgen.generateRectangle(currentSector.rect)
