@@ -1,6 +1,7 @@
 from .cells import Wall, Ground
 from .grid import Grid
 from .player import Player
+from .enemy import Enemy
 from .rect import Rectangle
 
 class Dungeon:
@@ -13,11 +14,14 @@ class Dungeon:
         exists, inclusive of changes and current state. """
 
     def __str__(self):
-        display = self.grid.add_grids(self.player.grid)
+        display = self.grid
+        display = display.add_grids(self.player.grid)
+        display = display.add_grids(self.enemy.grid)
         return str(display)
 
     def __init__(self, width, height, room_generator):
         self.player = Player(6, 7)
+        self.enemy = Enemy(7, 9)
         self.rooms = room_generator.generate()
         self.grid = self.make_grid(width, height)
 
@@ -28,10 +32,12 @@ class Dungeon:
             grid = grid.add_grids(room, room.rect.left, room.rect.top)
         return grid
 
-
     def update_player(self, addx, addy):
         if not self.collide(addx, addy):
             self.player.update(addx, addy)
+
+    def update_enemy(self, addx, addy):
+        pass
 
     def collide(self, addx, addy):
         new_x = self.player.x + addx

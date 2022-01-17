@@ -17,6 +17,7 @@ class Game:
         (x, y) = self.direction(key)
         self.quitcheck(key)
         self.dungeon.update_player(x, y)
+        self.dungeon.update_enemy(x, y)
 
     def quitcheck(self, key):
         if key == 'q':

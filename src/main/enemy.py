@@ -1,8 +1,8 @@
 from .grid import Grid
-from .cells import PlayerCell
+from .cells import EnemyCell
 from .rect import Rectangle
 
-class Player():
+class Enemy():
 
     def update(self, addx, addy):
         self.grid.rect.left = self.grid.rect.left + addx
@@ -20,6 +20,6 @@ class Player():
         I guess that means Dungeon isuStage
         """
         player_rect = Rectangle(y, y + 1, x, x + 1)
-        self.grid = Grid(player_rect, lambda: PlayerCell())
+        self.grid = Grid(player_rect, lambda: EnemyCell())
         self.x = x
         self.y = y
